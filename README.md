@@ -24,7 +24,7 @@ trading-system
 │   ├── main
 │   │   ├── java/ru/seleznev
 │   │   │   ├── app                       # REST-слой
-│   │   │   │   ├── controller            # HTTP-ручки
+│   │   │   │   ├── controller            # HTTP-endpoints
 │   │   │   │   ├── dto
 │   │   │   │   │   ├── request           # Входные данные
 │   │   │   │   │   └── response          # Ответы API
