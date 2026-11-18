@@ -16,6 +16,40 @@ REST API для выставления, сопоставления и испол
 - JUnit, Mockito и Testcontainers — тестирование.
 - Lombok — сокращение шаблонного кода.
 
+## Архитектура
+
+```text
+trading-system
+├── src
+│   ├── main
+│   │   ├── java/ru/seleznev
+│   │   │   ├── app                       # REST-слой
+│   │   │   │   ├── controller            # HTTP-ручки
+│   │   │   │   ├── dto
+│   │   │   │   │   ├── request           # Входные данные
+│   │   │   │   │   └── response          # Ответы API
+│   │   │   │   ├── exception             # Обработка ошибок
+│   │   │   │   └── mapper                # Entity → Response
+│   │   │   ├── domain
+│   │   │   │   ├── enums                 # Типы, стороны и статусы
+│   │   │   │   └── exception             # Доменные исключения
+│   │   │   ├── persistence
+│   │   │   │   ├── entity                # Hibernate-сущности
+│   │   │   │   └── repository            # Spring Data JPA
+│   │   │   ├── service
+│   │   │   │   ├── OrderService          # Работа с заявками
+│   │   │   │   ├── MatchingService       # Сопоставление и сделки
+│   │   │   │   ├── QuoteService          # Биржевой стакан
+│   │   │   │   └── RegistryService       # Реестры заявок и сделок
+│   │   │   └── TradingSystemApplication  # Точка входа
+│   │   └── resources
+│   │       ├── db/migration               # Flyway-миграции
+│   │       └── application.properties     # Настройки приложения
+│   └── test/java/ru/seleznev              # Интеграционный и unit-тесты
+├── compose.yaml                           # PostgreSQL в Docker
+└── pom.xml                                # Maven-зависимости
+```
+
 ## Запуск
 
 ```bash
@@ -26,3 +60,13 @@ docker compose up -d
 ```
 
 Swagger UI: http://localhost:8080/swagger-ui/index.html
+
+## Тестирование
+
+```bash
+./mvnw test
+```
+
+- `shouldCreateOrder` — проверяет создание заявки через REST API и PostgreSQL.
+- `shouldCombineOrdersWithSamePrice` — проверяет объединение заявок в один ценовой уровень.
+- `shouldThrowExceptionWhenInstrumentNotFound` — проверяет ошибку для неизвестного инструмента.
